@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "replace-with-gkg"
+version = "0.1.0"
+authors = ["Frank Blechschmidt <contact@frank-blechschmidt.com>"]
+homepage = "https://github.com/FraBle/replace-with-gkg"
+repository = "https://github.com/FraBle/replace-with-gkg"
+description = "Replace any input with a better result from the Google Knowledge Graph."
+license = "MIT"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Human Machine Interfaces",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Text Processing :: Linguistic"
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.5.3"
+bandit = "^1.6.2"
+doc8 = "^0.8.1"
+flake8 = "^3.8.3"
+safety = "^1.9.0"
+Sphinx = "^3.1.2"
+sphinx-click = "^2.3.2"
+sphinx-markdown-builder = "^0.5.4"
+sphinx-typlog-theme = "^0.8.0"
+wemake-python-styleguide = "^0.14.0"
+dodgy = "^0.2.1"
+pyre-check = "^0.0.46"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
