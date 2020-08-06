@@ -48,7 +48,7 @@ pyre-check = "^0.0.51"
 add-trailing-comma = "^2.0.1"
 
 [tool.poetry.scripts]
-replacer = 'replace_with_gkg.cli:cli'
+replace-with-gkg = 'replace_with_gkg.cli:cli'
 
 [build-system]
 requires = ["poetry>=1.0.10"]
