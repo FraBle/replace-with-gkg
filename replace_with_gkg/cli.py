@@ -6,6 +6,7 @@
 import csv
 import json
 import sys
+import time
 from pathlib import Path
 from typing import List, Mapping, Sequence, Union
 
@@ -24,6 +25,8 @@ PROMPT_STYLE = style_from_dict({
     Token.Question: 'bold',
     Token.Answer: '#ansidarkgreen',
 })
+
+CIRCUIT_BREAKER_LIMIT = 500
 
 nlp = inflect.engine()
 
@@ -172,6 +175,7 @@ def _process_suggestions(  # noqa: WPS231
     counter = 0
     processed = []
     replacements = {}
+    circuit_breaker = 0
 
     with yaspin(
         Spinners.bouncingBar,
@@ -184,6 +188,14 @@ def _process_suggestions(  # noqa: WPS231
             if unique_value in ignore_values:
                 processed.append(unique_value)
                 continue
+            if circuit_breaker == CIRCUIT_BREAKER_LIMIT:
+                # Google seems to rate limit req/s to ~1000 (undocumented).
+                # Adding a 1min sleep when reaching 500 consecutive requests.
+                logger.info('Hit circuit breaker; sleeping 1min...')
+                time.sleep(60)
+                logger.info('Resetting circuit breaker; continuing...')
+                circuit_breaker = 0
+            circuit_breaker += 1
             try:
                 suggestion = replacer.suggest(unique_value)
             except Exception as error:
@@ -195,6 +207,9 @@ def _process_suggestions(  # noqa: WPS231
             if suggestion and not suggestion_matches_input:
                 spinner.hide()
                 counter += 1
+                # Resetting the circuit_breaker since human interaction reduces
+                # req/s.
+                circuit_breaker = 0
                 answers = _prompt_user(
                     position, len(unique_values), unique_value, suggestion,
                 )
