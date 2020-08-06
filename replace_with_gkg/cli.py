@@ -332,7 +332,7 @@ def suggest(ctx, request: str):
     help='Skip replacing and saving CSV file values (default: false)',
 )
 @click.pass_context
-def process_file(  # noqa: WPS211,WPS216
+def process_file(
     ctx,
     column: str,
     csv_file: Path,
